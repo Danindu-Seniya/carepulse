@@ -8,6 +8,8 @@ import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
+import { UserFormValidation } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -19,12 +21,12 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-
 const PatientForm = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation),
     defaultValues: {
       name: "",
       email: "",
@@ -32,8 +34,23 @@ const PatientForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit({
+    name,
+    email,
+    phone,
+  }: z.infer<typeof UserFormValidation>) {
+    setIsLoading(true);
+    try {
+      // const userData = {
+      //   name,
+      //   email,
+      //   phone,
+      // }
+      // const user = await createUser(userData);
+      // if(user) router.push(`/patients/${user.$id}/register`)
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -52,9 +69,9 @@ const PatientForm = () => {
           placeholder="John Doe"
           iconSrc="/assets/icons/user.svg"
           iconAlt="user"
-          />
+        />
 
-<CustomFormField
+        <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
           name="email"
@@ -62,9 +79,9 @@ const PatientForm = () => {
           placeholder="johndoe@gmail.com"
           iconSrc="/assets/icons/user.svg"
           iconAlt="email"
-          />
+        />
 
-<CustomFormField
+        <CustomFormField
           fieldType={FormFieldType.PHONE_INPUT}
           control={form.control}
           name="phone"
@@ -72,11 +89,9 @@ const PatientForm = () => {
           placeholder="(+94) 71 123 4567"
           iconSrc="/assets/icons/user.svg"
           iconAlt="email"
-          />
+        />
 
-        <SubmitButton isLoading={isLoading}>
-          Get Started
-        </SubmitButton>
+        <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
     </Form>
   );
