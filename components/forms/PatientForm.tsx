@@ -88,7 +88,7 @@ const PatientForm = () => {
           label="Phone number"
           placeholder="(+94) 71 123 4567"
           iconSrc="/assets/icons/user.svg"
-          iconAlt="email"
+          iconAlt="phone"
         />
 
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
